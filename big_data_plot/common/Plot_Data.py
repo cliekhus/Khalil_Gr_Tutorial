@@ -15,7 +15,6 @@ lightgreen = '#00d39a'
 lightyellow = '#ffbc2b'
 darkred = '#8c0028'
 darkerred = '#64001c'
-#darkblue = '#116fa6'
 darkblue = '#005280'
 
 
@@ -53,6 +52,9 @@ def plot_two_data(pro_data1, pro_data2):
     
     
     
+    time_matrix, energy_matrix = np.meshgrid(pro_data1.time, pro_data1.energy)
+    
+    
     ################ slice plots with inset ####################
 
     fig, ax = plt.subplots(figsize=(3.3, 4))
@@ -60,7 +62,6 @@ def plot_two_data(pro_data1, pro_data2):
 
     plot_data(pro_data1, yellow, 'o')
     plot_data(pro_data2, blue, 's')
-    
     
     leg = plt.legend()
     leg.get_frame().set_edgecolor('k')
@@ -70,7 +71,6 @@ def plot_two_data(pro_data1, pro_data2):
     
 
     axins = inset_axes(ax, width=.9, height=.5, bbox_to_anchor=(.95, .28), bbox_transform=ax.transAxes)
-    time_matrix, energy_matrix = np.meshgrid(pro_data1.time, pro_data1.energy)
     
     cmap_alt = make_color_map(darkblue, lightyellow)
     axins.pcolor(time_matrix, energy_matrix, pro_data1.data_matrix, cmap = cmap_alt)
@@ -81,7 +81,6 @@ def plot_two_data(pro_data1, pro_data2):
     rect2 = make_rect(pro_data2, 1.5)
     axins.add_patch(rect2)
     
-    
     plt.tight_layout()
 
     
@@ -91,7 +90,7 @@ def plot_two_data(pro_data1, pro_data2):
     ################ data matrix plot with rectangles ####################
 
     fig, ax = plt.subplots(1, figsize=(3.3, 4))
-    plt.pcolor(time_matrix, energy_matrix, pro_data1.data_matrix, cmap = cmap_alt)#'viridis') #
+    plt.pcolor(time_matrix, energy_matrix, pro_data1.data_matrix, cmap = cmap_alt)#'viridis')
     plt.ylabel('energy (eV)')
     plt.xlabel('time (fs)')
     plt.colorbar()
@@ -102,7 +101,6 @@ def plot_two_data(pro_data1, pro_data2):
     rect2 = make_rect(pro_data2, 2)
     ax.add_patch(rect2)
     
-    
     plt.tight_layout()
     
     
@@ -110,6 +108,9 @@ def plot_two_data(pro_data1, pro_data2):
 
     
     ################ slice as top figure of data matrix ####################
+    
+    xlim_min = -100
+    xlim_max = 1000
     
     fig, ax = plt.subplots(figsize = (3.3,5))
     ax = plt.subplot2grid((10,1), (0,0), colspan = 1, rowspan = 2)
@@ -121,7 +122,7 @@ def plot_two_data(pro_data1, pro_data2):
     leg.get_frame().set_edgecolor('k')
     leg.get_frame().set_linewidth(0.8)
     leg.get_frame().set_alpha(1)
-    plt.xlim((-100,1000))
+    plt.xlim((xlim_min, xlim_max))
     
     
     ax = plt.subplot2grid((10,1), (2,0), colspan = 1, rowspan = 8)
@@ -136,7 +137,8 @@ def plot_two_data(pro_data1, pro_data2):
     plt.ylabel('energy (eV)')
     plt.xlabel('time (fs)')
     plt.colorbar(im, orientation = 'horizontal')
-    plt.xlim((-100,1000))
+    plt.xlim((xlim_min, xlim_max))
+    
     plt.tight_layout()
 
     
